@@ -14,3 +14,8 @@ void displaySensorData(LiquidCrystal &lcd, float temperatureF, float humidity){
     lcd.setCursor(0, 1);
     lcd.print("Humidity: " + String(humidity, 1) + "%");
 }
+
+void displaySensorError(LiquidCrystal &lcd){
+    lcd.clear();
+    lcd.print("Sensor error");
+}

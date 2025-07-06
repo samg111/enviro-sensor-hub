@@ -28,8 +28,7 @@ void loop() {
 
   if (isnan(humidity) || isnan(tempuratureF)) {
     Serial.println("Failed to read from DHT sensor");
-    lcd.clear();
-    lcd.print("Sensor error");
+    displaySensorError(lcd);
     return;
   }
 
