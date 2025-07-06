@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <LiquidCrystal.h>
 #include <DHT.h>
+#include "display_utils.h"
 
 #define DHTPIN 3    
 #define DHTTYPE DHT11 
@@ -12,10 +13,12 @@ LiquidCrystal lcd(12, 11, 4, 5, 6, 7);
 DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
-  lcd.begin(16, 2);
+  // lcd.begin(16, 2);
   Serial.begin(9600);
   dht.begin();
-  lcd.print("Hello, world!");
+  // lcd.print("Hello, world!");
+
+  initLcdDisplay(lcd);
 }
 
 void loop() {
