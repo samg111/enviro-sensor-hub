@@ -23,22 +23,24 @@ void setup() {
 
 void loop() {
   float humidity = dht.readHumidity();
-  float celsius = dht.readTemperature();
-  float fahrenheit = celsius * 9.0 / 5.0 + 32.0;
+  float tempuratureC = dht.readTemperature();
+  float tempuratureF = tempuratureC * 9.0 / 5.0 + 32.0;
 
-  if (isnan(humidity) || isnan(fahrenheit)) {
+  if (isnan(humidity) || isnan(tempuratureF)) {
     Serial.println("Failed to read from DHT sensor");
     lcd.clear();
     lcd.print("Sensor error");
     return;
   }
 
-  Serial.println("Temperature: " + String(fahrenheit, 1) + " °F  |  Humidity: " + String(humidity, 1) + " %");
+  Serial.println("Temperature: " + String(tempuratureF, 1) + " °F  |  Humidity: " + String(humidity, 1) + " %");
 
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("Temp: " + String(fahrenheit, 1) + (char)223 + "F");
-  lcd.setCursor(0, 1);
-  lcd.print("Humidity: " + String(humidity, 1) + "%");
+  displaySensorData(lcd, tempuratureF, humidity);
+
+  // lcd.clear();
+  // lcd.setCursor(0, 0);
+  // lcd.print("Temp: " + String(fahrenheit, 1) + (char)223 + "F");
+  // lcd.setCursor(0, 1);
+  // lcd.print("Humidity: " + String(humidity, 1) + "%");
   delay(5000);
 }
