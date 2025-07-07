@@ -11,6 +11,9 @@
 
 #define BUZZER_PIN 13
 
+// globals
+float temperatureThreshold = 85.0;
+
 // lcd display: RS, E, D4, D5, D6, D7
 LiquidCrystal lcd(12, 11, 4, 5, 6, 7);
 
@@ -25,9 +28,7 @@ void setup() {
 }
 
 void loop() {
-  float temperatureThreshold = 80.0;
   DhtData dhtData = readTempAndHumidity(dht);
-
   if (isnan(dhtData.humidity) || isnan(dhtData.temperatureF)) {
     printSensorError;
     displaySensorError(lcd);
