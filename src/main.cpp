@@ -3,6 +3,7 @@
 #include <DHT.h>
 #include "display_utils.h"
 #include "buzzer_utils.h"
+#include "dht_utils.h"
 
 #define DHTPIN 3    
 #define DHTTYPE DHT11 
@@ -23,23 +24,16 @@ void setup() {
 }
 
 void loop() {
-  float temperatureThreshold = 90.0;
-  float humidity = dht.readHumidity();
-  float temperatureC = dht.readTemperature();
-  float temperatureF = temperatureC * 9.0 / 5.0 + 32.0;
+  float temperatureThreshold = 80.0;
+  DhtData dhtData = readTempAndHumidity(dht);
 
-  if (isnan(humidity) || isnan(temperatureF)) {
+  if (isnan(dhtData.humidity) || isnan(dhtData.temperatureF)) {
     Serial.println("Failed to read from DHT sensor");
     displaySensorError(lcd);
     return;
   }
-  Serial.println("Temperature: " + String(temperatureF, 1) + " °F  |  Humidity: " + String(humidity, 1) + " %");
-  displaySensorData(lcd, temperatureF, humidity);
-  checkTempThreshold(BUZZER_PIN, temperatureF, temperatureThreshold);
-  // if (tempuratureF > temperatureThreshold){
-  //   digitalWrite(BUZZER_PIN, HIGH);
-  // } else {
-  //   digitalWrite(BUZZER_PIN, LOW);
-  // }
+  Serial.println("Temperature: " + String(dhtData.temperatureF, 1) + " °F  |  Humidity: " + String(dhtData.humidity, 1) + " %");
+  displaySensorData(lcd, dhtData.temperatureF, dhtData.humidity);
+  checkTempThreshold(BUZZER_PIN, dhtData.temperatureF, temperatureThreshold);
   delay(5000);
 }
