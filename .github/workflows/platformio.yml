@@ -2,7 +2,7 @@ name: enviro-sensor-hub PlatformIO CI
 
 on:
   push:
-    branches: [ Feature/github-actions-workflow ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
