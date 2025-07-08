@@ -1,8 +1,8 @@
-#ifndef BUZZER_UTILS_H
-#define BUZZER_UTILS_H
+#ifndef INCLUDE_BUZZER_UTILS_H_
+#define INCLUDE_BUZZER_UTILS_H_
 
 #include <Arduino.h>
 
 void checkTempThreshold(uint8_t buzzerPin, float temperatureF, float temperatureThreshold);
 
-#endif
+#endif  // INCLUDE_BUZZER_UTILS_H_

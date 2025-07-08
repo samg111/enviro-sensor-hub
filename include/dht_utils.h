@@ -1,5 +1,5 @@
-#ifndef DHT_UTILS_H
-#define DHT_UTILS_H
+#ifndef INCLUDE_DHT_UTILS_H_
+#define INCLUDE_DHT_UTILS_H_
 
 #include <Arduino.h>
 #include <DHT.h>
@@ -10,6 +10,6 @@ struct DhtData{
     float temperatureC;
 };
 
-DhtData readTempAndHumidity(DHT &dht);
+DhtData readTempAndHumidity(DHT *dht);
 
-#endif
+#endif  // INCLUDE_DHT_UTILS_H_
