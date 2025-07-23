@@ -10,6 +10,8 @@
 #define DHTTYPE DHT11
 
 #define BUZZER_PIN 13
+#define LDR_PIN A0
+#define BACKLIGHT_TRANSISTOR_PIN 9
 
 // globals
 float temperatureThreshold = 85.0;
@@ -22,9 +24,12 @@ DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
   pinMode(BUZZER_PIN, OUTPUT);
+  pinMode(LDR_PIN, INPUT);
+  pinMode(BACKLIGHT_TRANSISTOR_PIN, OUTPUT);
   Serial.begin(9600);
   dht.begin();
-  initLcdDisplay(&lcd);
+  // analogWrite(BACKLIGHT_TRANSISTOR_PIN, 255);
+  initLcdDisplay(&lcd, BACKLIGHT_TRANSISTOR_PIN);
 }
 
 void loop() {
@@ -36,6 +41,16 @@ void loop() {
   }
   displaySensorData(&lcd, dhtData.temperatureF, dhtData.humidity);
   printSensorData(dhtData);
+
+  int ldrValue = analogRead(LDR_PIN);
+  int lightLevel = map(ldrValue, 0, 1023, 0, 255);
+
+  printLightLevel(lightLevel);
+  changeLcdBacklight(lightLevel, BACKLIGHT_TRANSISTOR_PIN);
+  // Serial.print("Light level: ");
+  // Serial.println(lightLevel);
+  // analogWrite(BACKLIGHT_TRANSISTOR_PIN, lightLevel);
+
   checkTempThreshold(BUZZER_PIN, dhtData.temperatureF, temperatureThreshold);
   delay(5000);
 }
