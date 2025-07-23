@@ -6,5 +6,6 @@
 
 void printSensorData(const DhtData& data);
 void printSensorError();
+void printLightLevel(int lightLevel);
 
 #endif  // INCLUDE_SERIAL_UTILS_H_

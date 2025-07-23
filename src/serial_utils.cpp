@@ -8,3 +8,7 @@ void printSensorData(const DhtData& data) {
 void printSensorError() {
   Serial.println("Failed to read from DHT sensor");
 }
+
+void printLightLevel(int lightLevel) {
+  Serial.println("Light level: " + String(lightLevel));
+}
