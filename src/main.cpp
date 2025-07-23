@@ -47,14 +47,17 @@ void loop() {
     displaySensorError(&lcd);
     return;
   }
-  displaySensorData(&lcd, dhtData.temperatureF, dhtData.humidity);
+  displaySensorData(&lcd, dhtData, waterLevel, lightLevel);
   printSensorData(dhtData);
 
   
   changeLcdBacklight(lightLevel, BACKLIGHT_TRANSISTOR_PIN);
   printLightLevel(lightLevel);
   
-  checkTempThreshold(BUZZER_PIN, dhtData.temperatureF, temperatureThreshold);
+  if (checkTempThreshold(BUZZER_PIN, dhtData.temperatureF, temperatureThreshold)) {
+    displayWarning(&lcd);
+    delay(1000);
+  }
   
-  delay(100);
+  // delay(1000);
 }
