@@ -5,13 +5,15 @@
 #include "buzzer_utils.h"
 #include "dht_utils.h"
 #include "serial_utils.h"
+#include "water_utils.h"
 
-#define DHTPIN 3
 #define DHTTYPE DHT11
 
+#define DHT_PIN 3
 #define BUZZER_PIN 13
-#define LDR_PIN A0
+#define LDR_PIN A1
 #define BACKLIGHT_TRANSISTOR_PIN 9
+#define WATER_SENSOR_PIN A5
 
 // globals
 float temperatureThreshold = 85.0;
@@ -20,7 +22,7 @@ float temperatureThreshold = 85.0;
 LiquidCrystal lcd(12, 11, 4, 5, 6, 7);
 
 // dht11 temp and humidity sensor
-DHT dht(DHTPIN, DHTTYPE);
+DHT dht(DHT_PIN, DHTTYPE);
 
 void setup() {
   pinMode(BUZZER_PIN, OUTPUT);
@@ -28,12 +30,18 @@ void setup() {
   pinMode(BACKLIGHT_TRANSISTOR_PIN, OUTPUT);
   Serial.begin(9600);
   dht.begin();
-  // analogWrite(BACKLIGHT_TRANSISTOR_PIN, 255);
   initLcdDisplay(&lcd, BACKLIGHT_TRANSISTOR_PIN);
 }
 
 void loop() {
   DhtData dhtData = readTempAndHumidity(&dht);
+
+  int waterLevel = readWaterLevel(WATER_SENSOR_PIN);
+  printWaterLevel(waterLevel);
+
+  int ldrValue = analogRead(LDR_PIN);
+  int lightLevel = map(ldrValue, 0, 1023, 0, 255);
+
   if (isnan(dhtData.humidity) || isnan(dhtData.temperatureF)) {
     printSensorError();
     displaySensorError(&lcd);
@@ -42,15 +50,11 @@ void loop() {
   displaySensorData(&lcd, dhtData.temperatureF, dhtData.humidity);
   printSensorData(dhtData);
 
-  int ldrValue = analogRead(LDR_PIN);
-  int lightLevel = map(ldrValue, 0, 1023, 0, 255);
-
-  printLightLevel(lightLevel);
+  
   changeLcdBacklight(lightLevel, BACKLIGHT_TRANSISTOR_PIN);
-  // Serial.print("Light level: ");
-  // Serial.println(lightLevel);
-  // analogWrite(BACKLIGHT_TRANSISTOR_PIN, lightLevel);
-
+  printLightLevel(lightLevel);
+  
   checkTempThreshold(BUZZER_PIN, dhtData.temperatureF, temperatureThreshold);
-  delay(5000);
+  
+  delay(100);
 }
