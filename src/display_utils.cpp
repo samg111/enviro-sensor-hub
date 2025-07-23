@@ -11,9 +11,14 @@ void initLcdDisplay(LiquidCrystal *lcd, int BACKLIGHT_TRANSISTOR_PIN) {
 void displaySensorData(LiquidCrystal *lcd, float temperatureF, float humidity) {
     lcd->clear();
     lcd->setCursor(0, 0);
-    lcd->print("Temp: " + String(temperatureF, 1) + static_cast<char>(223) + "F");
+    lcd->print("Temp: ");
+    lcd->print(String(temperatureF, 1));
+    lcd->print(static_cast<char>(223));
+    lcd->print("F");
     lcd->setCursor(0, 1);
-    lcd->print("Humidity: " + String(humidity, 1) + "%");
+    lcd->print("Humidity: ");
+    lcd->print(String(humidity, 1));
+    lcd->print("%");
 }
 
 void displaySensorError(LiquidCrystal *lcd) {
